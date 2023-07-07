@@ -1,65 +1,90 @@
+import flights from "../Pages/flights"
+import HomePage from "../Pages/homepage"
+import purchase from "../Pages/purchase"
+
+
 Cypress.on('uncaught:exception', (err, runnable) => {
-    // returning false here prevents Cypress from
-    // failing the test
-    return false
+  // returning false here prevents Cypress from
+  // failing the test
+  return false
 })
 
-it('visit website blazedemo',()=>{
+
+
+const homepageobject = new HomePage()
+const flightsobject = new flights()
+const purchaseobject = new purchase()
+
+
+
+it('visit website blazedemo', () => {
   cy.visit('/')
 })
 
-it('check destination of the week! The Beach! button is clickable',()=>{
+beforeEach(() => {
   cy.visit('/')
-  cy.contains('destination of the week! The Beach!').click()
 })
 
-it('select one element from departure cities',()=>{
-  cy.visit('/')
-  cy.get('[name="fromPort"]').last()
-  cy.get('[name="toPort"]').first()
+it('check destination of the week! The Beach! button is clickable', () => {
+
+  homepageobject.clickurlText()
+
 })
 
-it('click on Find Flights button',()=>{
-  cy.visit('/')
-  cy.get('.btn.btn-primary').click()
+it('hover on link check destination of the week! The Beach!', () => {
+
+  homepageobject.hoveronlink()
 })
 
-it('select cheapest flight',()=>{
-  cy.visit('/')
-  cy.get('[name="fromPort"]').last()
-  cy.get('[name="toPort"]').first()
-  cy.get('.btn.btn-primary').click()
-  cy.get('[type="submit"]').eq(2).click()
+it('select one element from departure cities', () => {
+
+  homepageobject.choosecity()
 })
 
-it('should submit with valid data',()=>{
-  cy.visit('/')
-  cy.get('[name="fromPort"]').last()
-  cy.get('[name="toPort"]').first()
-  cy.get('.btn.btn-primary').click()
-  cy.get('[type="submit"]').eq(2).click()
+it('hover on Find flight button', () => {
 
-  
-    cy.fixture('Data').then((Data)=>{
+  homepageobject.hoveronfindflight()
+})
 
-      cy.get('#inputName').type(Data.name)
-      cy.get('#address').type(Data.address)
-      cy.get('#city').type(Data.city)
-      cy.get('#state').type(Data.state)
-      cy.get('#zipCode').type(Data.zipCode)
-      cy.get('#cardType').select(Data.cardtype)
-      cy.get('#creditCardNumber').type(Data.creditcardnumber)
-      cy.get('#creditCardMonth').type(Data.month)
-      cy.get('#creditCardYear').type(Data.year)
-      cy.get('#nameOnCard').type(Data.nameoncard)
+it('click on Find Flights button', () => {
 
-    })
-  
-    cy.get('#rememberMe').check()
-    cy.contains('Purchase Flight').click()
-  
-  })
-  
- 
-    
-  
+  homepageobject.clickonfindfligt()
+})
+
+it('select cheapest flight', () => {
+
+  homepageobject.choosecity()
+  homepageobject.clickonfindfligt()
+  flightsobject.selectflight()
+
+})
+
+it('should submit with valid data', () => {
+
+  homepageobject.choosecity()
+  homepageobject.clickonfindfligt()
+  flightsobject.selectflight()
+  purchaseobject.purchase()
+
+})
+
+it('click on checkbox Remember me', () => {
+  homepageobject.choosecity()
+  homepageobject.clickonfindfligt()
+  flightsobject.selectflight()
+  purchaseobject.purchase()
+  purchaseobject.clickrememberme()
+})
+
+it('click on Purchase Flight button', () => {
+  homepageobject.choosecity()
+  homepageobject.clickonfindfligt()
+  flightsobject.selectflight()
+  purchaseobject.purchase()
+  purchaseobject.clickrememberme()
+  purchaseobject.clickpurchaseflight()
+
+})
+
+
+
